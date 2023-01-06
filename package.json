@@ -4,8 +4,8 @@
   "description": "CRUD-api on Node without any frameworks",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node src/index.ts",
+    "dev": "nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
