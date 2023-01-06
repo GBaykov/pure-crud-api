@@ -1,7 +1,10 @@
 .history
 node_modules
+node_modules/
 dist
 /dist
+build
+.vscode
 
 # Logs
 logs
