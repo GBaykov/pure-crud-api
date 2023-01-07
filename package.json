@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "type": "commonjs",
   "scripts": {
-    "start:dev": "nodemon index.js",
+    "start:dev": "nodemon src/index.ts",
     "start:prod": "webpack",
     "start": "node src/index.ts",
     "dev": "nodemon src/index.ts",

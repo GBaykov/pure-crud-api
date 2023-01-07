@@ -1,5 +1,3 @@
-import { v4 as uuid } from 'uuid';
-
 export interface IUSER {
   id?: string;
   username: string;
@@ -7,5 +5,12 @@ export interface IUSER {
   hobbies: string[] | [];
 }
 export type IUSERS = IUSER[] | [];
+
+export interface IuserRequest {
+  id?: string;
+  username?: string;
+  age?: number;
+  hobbies?: string[] | [];
+}
 
 // export default IUSER;

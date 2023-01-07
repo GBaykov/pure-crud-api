@@ -1,4 +1,4 @@
 import { IUSER, IUSERS } from './types/user';
 
-const DB: IUSERS = [];
+const DB: Array<IUSER> = [];
 export default DB;
