@@ -1,4 +1,4 @@
-import {IUSER, IUSERS} from "./types/user";
+import { IUSER, IUSERS } from './types/user';
 
-const DB:IUSERS= [];
+const DB: IUSERS = [];
 export default DB;
