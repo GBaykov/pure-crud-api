@@ -4,6 +4,7 @@ config();
 import { v4 as uuid } from 'uuid';
 import { IRequestPutUser, IUSER, IUSERS } from './types/user';
 import DB from './DB';
+import { isUid } from './isUid';
 
 const PORT = process.env.PORT;
 
@@ -61,6 +62,11 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
 
       if (req.method === 'GET') {
         const id = req.url.split('/')[3];
+        if(isUid(id) === false){
+          res.writeHead(400)
+          res.write('Error:your ID is not UUID')
+          res.end()
+        }
         const user = DB.find(item => item.id === id);
         if (user) {
           res.writeHead(200);
@@ -75,6 +81,11 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
     
     else if (req.method === 'PUT'){
       const id = req.url.split('/')[3];
+      if(isUid(id) === false){
+        res.writeHead(400)
+        res.write('Error:your ID is not UUID')
+        res.end()
+      }
       const user = DB.find(item => item.id === id);
    
         const body: Array<Buffer> = [];
@@ -82,38 +93,47 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
         req.on('data', (data)=> {
           body.push(Buffer.from(data))
         });
+
+        req.on('end', ()=> {
+          const newUser: IUSER = JSON.parse(body.toString());
+          if (!newUser.username || !newUser.age || !newUser.hobbies) {
+            res.writeHead(404);
+            res.write(
+              'Error: incorrect properties. Person mast have age, username, hobbies'
+            );
+            res.end();
+          } else {
+            if (user) {
+              newUser.id = id;
+            const index = DB.indexOf(user);
+            DB.splice(index, 1, newUser)
+            res.writeHead(200);
+            res.end( JSON.stringify(newUser))
+            }else {        
+              res.writeHead(404)
+              res.write('Error:cannot find person whis such ID')
+              res.end()
+          }
+            
+          }
+        })
   
-        const newUser: IUSER = JSON.parse(body.toString());
-        if (!newUser.username || !newUser.age || !newUser.hobbies) {
-          res.writeHead(404);
-          res.write(
-            'Error: incorrect properties. Person mast have age, username, hobbies'
-          );
-          res.end();
-        } else {
-          if (user) {
-            newUser.id = id;
-          const index = DB.indexOf(user);
-          DB.splice(index, 1, newUser)
-          res.writeHead(200);
-          res.end( JSON.stringify(newUser))
-          }else {        
-            res.writeHead(404)
-            res.write('Error:cannot find person whis such ID')
-            res.end()
-        }
-          
-        }
-      
-      
-    
+
     } else if (req.method === 'DELETE'){
       const id = req.url.split('/')[3];
+      if(isUid(id) === false){
+        res.writeHead(400)
+        res.write('Error:your ID is not UUID')
+        res.end()
+      }
       const user = DB.find(item => item.id === id);
       if (user) {
         const index = DB.indexOf(user);
+        console.log(index)
         DB.splice(index, 1);
+        console.log(DB)
         res.writeHead(204);
+        res.end()
       } else {        
           res.writeHead(404)
           res.write('Error:cannot find person whis such ID')
