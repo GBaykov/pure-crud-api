@@ -22,10 +22,12 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
 
 
       } else if (req.method === 'POST') {
-        const body: Array<Buffer> = [];
+        // const body: Array<Buffer> = [];
+        let body = ''
 
         req.on('data', (data) => {
-          body.push(Buffer.from(data));
+          // body.push(Buffer.from(data));
+          body += data;
         });
 
         req.on('end', () => {
@@ -88,10 +90,12 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
       }
       const user = DB.find(item => item.id === id);
    
-        const body: Array<Buffer> = [];
+        // const body: Array<Buffer> = [];
+        let body = ''
 
         req.on('data', (data)=> {
-          body.push(Buffer.from(data))
+          body += data;
+          // body.push(Buffer.from(data))
         });
 
         req.on('end', ()=> {
@@ -129,9 +133,7 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
       const user = DB.find(item => item.id === id);
       if (user) {
         const index = DB.indexOf(user);
-        console.log(index)
         DB.splice(index, 1);
-        console.log(DB)
         res.writeHead(204);
         res.end()
       } else {        
